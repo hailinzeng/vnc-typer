@@ -32,7 +32,7 @@ If Tkinter is missing, install it through your Python distribution or system pac
 
 Saved preferences include language, IP address, and port only. The VNC password is not saved.
 
-The macOS release archive uses a source launcher instead of a PyInstaller binary because unsigned PyInstaller bundles can be blocked by macOS system policy after download. Run `run-vnc-typer.command` from the extracted macOS archive; it creates a local virtual environment and installs the required Python packages.
+The macOS release archive uses a source launcher instead of a PyInstaller binary because unsigned PyInstaller bundles can be blocked by macOS system policy after download. Run `run-vnc-typer.command` from the extracted macOS archive; it creates a local virtual environment and installs the required Python packages. The launcher looks for a Python installation with Tkinter support. If needed, install Python from python.org or set `VNC_TYPER_PYTHON` to a Python executable that can run `python3 -c "import tkinter"`.
 
 ## Usage
 
