@@ -38,6 +38,7 @@ BTN_PRIMARY_HOVER = "#1d4ed8"
 PANEL_BG = "#22252d"
 STATUS_BG = "#111318"
 LABEL_COLOR = "#9aa3b2"
+NATIVE_CONTROL_FG = "#111318" if sys.platform == "darwin" else FG_MAIN
 
 FONT_MAIN = ("Segoe UI", 10)
 FONT_BOLD = ("Segoe UI", 10, "bold")
@@ -337,13 +338,14 @@ class VNCTyperGUI:
         s.configure("TEntry", fieldbackground=BG_INPUT, foreground=FG_MAIN,
                     insertcolor=FG_MAIN, borderwidth=0, padding=(6, 4))
         s.configure("TCombobox", fieldbackground=BG_INPUT, background=BTN_BG,
-                    foreground=FG_MAIN, arrowcolor=FG_MAIN, borderwidth=0)
-        s.configure("TButton", background=BTN_BG, foreground=FG_MAIN, font=FONT_BOLD,
+                    foreground=NATIVE_CONTROL_FG, arrowcolor=NATIVE_CONTROL_FG, borderwidth=0)
+        s.map("TCombobox", foreground=[("readonly", NATIVE_CONTROL_FG)])
+        s.configure("TButton", background=BTN_BG, foreground=NATIVE_CONTROL_FG, font=FONT_BOLD,
                     borderwidth=0, padding=(10, 5))
         s.map("TButton",
               background=[("active", BTN_HOVER), ("pressed", BTN_BG)],
-              foreground=[("active", FG_MAIN)])
-        s.configure("File.TButton", background=BTN_BG, foreground=FG_MAIN, font=FONT_BOLD,
+              foreground=[("active", NATIVE_CONTROL_FG)])
+        s.configure("File.TButton", background=BTN_BG, foreground=NATIVE_CONTROL_FG, font=FONT_BOLD,
                     borderwidth=0, padding=(8, 5))
         s.map("File.TButton", background=[("active", BTN_HOVER), ("pressed", BTN_BG)])
 
@@ -462,15 +464,15 @@ class VNCTyperGUI:
         action_frame.pack(fill="x", padx=18, pady=(2, 6))
 
         self.send_btn = tk.Button(action_frame, text=self.t("send_text"),
-                                   font=FONT_BOLD, bg=BTN_PRIMARY, fg=FG_MAIN,
-                                   activebackground=BTN_PRIMARY_HOVER, activeforeground=FG_MAIN,
+                                   font=FONT_BOLD, bg=BTN_PRIMARY, fg=NATIVE_CONTROL_FG,
+                                   activebackground=BTN_PRIMARY_HOVER, activeforeground=NATIVE_CONTROL_FG,
                                    relief="flat", padx=15, pady=8,
                                    cursor="hand2", command=self.send_text)
         self.send_btn.pack(side="left", padx=(0, 8), fill="x", expand=True)
 
         self.send_file_btn = tk.Button(action_frame, text=self.t("send_file"),
-                                        font=FONT_BOLD, bg=BTN_BG, fg=FG_MAIN,
-                                        activebackground=BTN_HOVER, activeforeground=FG_MAIN,
+                                        font=FONT_BOLD, bg=BTN_BG, fg=NATIVE_CONTROL_FG,
+                                        activebackground=BTN_HOVER, activeforeground=NATIVE_CONTROL_FG,
                                         relief="flat", padx=15, pady=8,
                                         cursor="hand2", command=self.send_file)
         self.send_file_btn.pack(side="left", padx=(0, 0), fill="x", expand=True)
