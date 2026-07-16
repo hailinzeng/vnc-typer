@@ -1,0 +1,88 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: macos
+            os: macos-latest
+            add_data: "icon.png:."
+            windowed: ""
+            archive: vnc-typer-macos.zip
+          - name: linux
+            os: ubuntu-latest
+            add_data: "icon.png:."
+            windowed: ""
+            archive: vnc-typer-linux.tar.gz
+          - name: windows
+            os: windows-latest
+            add_data: "icon.png;."
+            windowed: "--windowed"
+            archive: vnc-typer-windows.zip
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyinstaller
+
+      - name: Build vnc-typer
+        run: >
+          pyinstaller
+          --noconfirm
+          --clean
+          ${{ matrix.windowed }}
+          --name vnc-typer
+          --add-data "${{ matrix.add_data }}"
+          main.py
+
+      - name: Build bundled vncdo command
+        run: >
+          pyinstaller
+          --noconfirm
+          --clean
+          --console
+          --onefile
+          --name vncdo
+          --distpath dist/vnc-typer
+          vncdo_launcher.py
+
+      - name: Package release asset
+        if: runner.os != 'Linux'
+        shell: bash
+        run: |
+          cd dist
+          python -m zipfile -c "../${{ matrix.archive }}" vnc-typer
+
+      - name: Package release asset
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          cd dist
+          tar -czf "../${{ matrix.archive }}" vnc-typer
+
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ matrix.archive }}
+          generate_release_notes: true
