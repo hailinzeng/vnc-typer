@@ -69,7 +69,7 @@ git tag v0.1.0
 git push origin v0.1.0
 ```
 
-The release workflow creates downloadable archives for macOS, Linux x86_64, Linux aarch64, and Windows. Each archive includes the `vnc-typer` app and a bundled `vncdo` command built from `vncdotool`.
+The release workflow creates downloadable archives for macOS, Linux x86_64, Linux aarch64, and Windows. Release asset filenames include the tag version, such as `vnc-typer-v0.1.3-linux-x86_64.tar.gz`. Each archive includes the `vnc-typer` app and a bundled `vncdo` command built from `vncdotool`.
 
 ## Project Files
 

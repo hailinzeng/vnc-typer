@@ -20,22 +20,22 @@ jobs:
             os: macos-latest
             add_data: "icon.png:."
             windowed: ""
-            archive: vnc-typer-macos.zip
+            archive_suffix: macos.zip
           - name: linux-x86_64
             os: ubuntu-latest
             add_data: "icon.png:."
             windowed: ""
-            archive: vnc-typer-linux-x86_64.tar.gz
+            archive_suffix: linux-x86_64.tar.gz
           - name: linux-aarch64
             os: ubuntu-24.04-arm
             add_data: "icon.png:."
             windowed: ""
-            archive: vnc-typer-linux-aarch64.tar.gz
+            archive_suffix: linux-aarch64.tar.gz
           - name: windows
             os: windows-latest
             add_data: "icon.png;."
             windowed: "--windowed"
-            archive: vnc-typer-windows.zip
+            archive_suffix: windows.zip
 
     steps:
       - name: Check out repository
@@ -77,17 +77,17 @@ jobs:
         shell: bash
         run: |
           cd dist
-          python -m zipfile -c "../${{ matrix.archive }}" vnc-typer
+          python -m zipfile -c "../vnc-typer-${{ github.ref_name }}-${{ matrix.archive_suffix }}" vnc-typer
 
       - name: Package release asset
         if: runner.os == 'Linux'
         shell: bash
         run: |
           cd dist
-          tar -czf "../${{ matrix.archive }}" vnc-typer
+          tar -czf "../vnc-typer-${{ github.ref_name }}-${{ matrix.archive_suffix }}" vnc-typer
 
       - name: Upload release asset
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ matrix.archive }}
+          files: vnc-typer-${{ github.ref_name }}-${{ matrix.archive_suffix }}
           generate_release_notes: true
