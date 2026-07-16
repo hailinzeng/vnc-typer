@@ -21,11 +21,16 @@ jobs:
             add_data: "icon.png:."
             windowed: ""
             archive: vnc-typer-macos.zip
-          - name: linux
+          - name: linux-x86_64
             os: ubuntu-latest
             add_data: "icon.png:."
             windowed: ""
-            archive: vnc-typer-linux.tar.gz
+            archive: vnc-typer-linux-x86_64.tar.gz
+          - name: linux-aarch64
+            os: ubuntu-24.04-arm
+            add_data: "icon.png:."
+            windowed: ""
+            archive: vnc-typer-linux-aarch64.tar.gz
           - name: windows
             os: windows-latest
             add_data: "icon.png;."
