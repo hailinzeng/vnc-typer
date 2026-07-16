@@ -75,13 +75,19 @@ git tag v0.1.0
 git push origin v0.1.0
 ```
 
-The release workflow creates downloadable archives for macOS, Linux x86_64, Linux aarch64, and Windows. Release asset filenames and extracted folder names include the tag version, such as `vnc-typer-v0.1.3-linux-x86_64.tar.gz` and `vnc-typer-v0.1.3-linux-x86_64`. Windows and Linux archives include the `vnc-typer` app and a bundled `vncdo` command built from `vncdotool`. The macOS archive includes source files and a launcher script to avoid unsigned PyInstaller bundle failures.
+The release workflow creates source launcher archives for macOS, Linux x86_64, Linux aarch64, and Windows. Release asset filenames and extracted folder names include the tag version, such as `vnc-typer-v0.1.3-linux-x86_64.tar.gz` and `vnc-typer-v0.1.3-linux-x86_64`. Each archive includes source files, license files, and launcher scripts that create a local virtual environment and install dependencies from `requirements.txt`.
 
 Release builds generate `version.py` from the pushed tag, so the app title matches the release version. Local development builds show `dev` unless `VNC_TYPER_VERSION` is set.
+
+## License
+
+`vnc-typer` is licensed under the MIT License. See `LICENSE`.
+
+Third-party dependency notes are listed in `THIRD_PARTY_NOTICES.md`, including the planned PySide6 migration candidate. PySide6 is not currently required by this Tkinter version.
 
 ## Project Files
 
 - `main.py` - Tkinter application.
 - `icon.png` - Window icon.
 - `requirements.txt` - Python runtime dependencies.
-- `vncdo_launcher.py` - Release-build entry point for the bundled `vncdo` command.
+- `scripts/` - Source launcher scripts for macOS, Linux, and Windows releases.
