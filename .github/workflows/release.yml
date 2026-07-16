@@ -18,9 +18,9 @@ jobs:
         include:
           - name: macos
             os: macos-latest
-            add_data: "icon.png:."
-            icon_arg: "--icon icon.icns"
-            codesign_arg: "--codesign-identity -"
+            add_data: ""
+            icon_arg: ""
+            codesign_arg: ""
             vncdo_bundle_mode: ""
             windowed: ""
             archive_suffix: macos.zip
@@ -73,24 +73,8 @@ jobs:
         if: runner.os == 'Windows'
         run: python scripts/make_ico.py icon.png icon.ico
 
-      - name: Generate macOS app icon
-        if: runner.os == 'macOS'
-        shell: bash
-        run: |
-          mkdir icon.iconset
-          sips -z 16 16 icon.png --out icon.iconset/icon_16x16.png
-          sips -z 32 32 icon.png --out icon.iconset/icon_16x16@2x.png
-          sips -z 32 32 icon.png --out icon.iconset/icon_32x32.png
-          sips -z 64 64 icon.png --out icon.iconset/icon_32x32@2x.png
-          sips -z 128 128 icon.png --out icon.iconset/icon_128x128.png
-          sips -z 256 256 icon.png --out icon.iconset/icon_128x128@2x.png
-          sips -z 256 256 icon.png --out icon.iconset/icon_256x256.png
-          sips -z 512 512 icon.png --out icon.iconset/icon_256x256@2x.png
-          sips -z 512 512 icon.png --out icon.iconset/icon_512x512.png
-          sips -z 1024 1024 icon.png --out icon.iconset/icon_512x512@2x.png
-          iconutil -c icns icon.iconset -o icon.icns
-
       - name: Build vnc-typer
+        if: runner.os != 'macOS'
         run: >
           pyinstaller
           --noconfirm
@@ -103,6 +87,7 @@ jobs:
           main.py
 
       - name: Build bundled vncdo command
+        if: runner.os != 'macOS'
         run: >
           pyinstaller
           --noconfirm
@@ -118,6 +103,21 @@ jobs:
         if: runner.os == 'macOS'
         shell: bash
         run: |
+          mkdir -p dist/vnc-typer
+          cp main.py icon.png requirements.txt README.md version.py dist/vnc-typer/
+          cat > dist/vnc-typer/run-vnc-typer.command <<'EOF'
+          #!/bin/sh
+          set -eu
+          cd "$(dirname "$0")"
+          if [ ! -d .venv ]; then
+            python3 -m venv .venv
+          fi
+          . .venv/bin/activate
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          python main.py
+          EOF
+          chmod +x dist/vnc-typer/run-vnc-typer.command
           cd dist
           ditto -c -k --keepParent vnc-typer "../vnc-typer-${{ github.ref_name }}-${{ matrix.archive_suffix }}"
 

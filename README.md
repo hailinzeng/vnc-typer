@@ -32,7 +32,7 @@ If Tkinter is missing, install it through your Python distribution or system pac
 
 Saved preferences include language, IP address, and port only. The VNC password is not saved.
 
-On macOS, prefer the latest release archive. Older macOS archives may fail after download because system security can block PyInstaller's bundled Python library if archive metadata is not preserved.
+The macOS release archive uses a source launcher instead of a PyInstaller binary because unsigned PyInstaller bundles can be blocked by macOS system policy after download. Run `run-vnc-typer.command` from the extracted macOS archive; it creates a local virtual environment and installs the required Python packages.
 
 ## Usage
 
@@ -75,7 +75,7 @@ git tag v0.1.0
 git push origin v0.1.0
 ```
 
-The release workflow creates downloadable archives for macOS, Linux x86_64, Linux aarch64, and Windows. Release asset filenames include the tag version, such as `vnc-typer-v0.1.3-linux-x86_64.tar.gz`. Each archive includes the `vnc-typer` app and a bundled `vncdo` command built from `vncdotool`.
+The release workflow creates downloadable archives for macOS, Linux x86_64, Linux aarch64, and Windows. Release asset filenames include the tag version, such as `vnc-typer-v0.1.3-linux-x86_64.tar.gz`. Windows and Linux archives include the `vnc-typer` app and a bundled `vncdo` command built from `vncdotool`. The macOS archive includes source files and a launcher script to avoid unsigned PyInstaller bundle failures.
 
 Release builds generate `version.py` from the pushed tag, so the app title matches the release version. Local development builds show `dev` unless `VNC_TYPER_VERSION` is set.
 
