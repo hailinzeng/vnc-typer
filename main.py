@@ -219,8 +219,14 @@ def resource_path(name):
 def bundled_command(name):
     base_dir = os.path.dirname(sys.executable if getattr(sys, "frozen", False) else __file__)
     exe_name = f"{name}.exe" if os.name == "nt" else name
-    path = os.path.join(base_dir, exe_name)
-    return path if os.path.exists(path) else None
+    candidates = [
+        os.path.join(base_dir, exe_name),
+        os.path.join(base_dir, name, exe_name),
+    ]
+    for path in candidates:
+        if os.path.isfile(path) and os.access(path, os.X_OK):
+            return path
+    return None
 
 
 class ToolTip:

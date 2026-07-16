@@ -20,24 +20,28 @@ jobs:
             os: macos-latest
             add_data: "icon.png:."
             icon_arg: "--icon icon.icns"
+            vncdo_bundle_mode: ""
             windowed: ""
             archive_suffix: macos.zip
           - name: linux-x86_64
             os: ubuntu-latest
             add_data: "icon.png:."
             icon_arg: ""
+            vncdo_bundle_mode: "--onefile"
             windowed: ""
             archive_suffix: linux-x86_64.tar.gz
           - name: linux-aarch64
             os: ubuntu-24.04-arm
             add_data: "icon.png:."
             icon_arg: ""
+            vncdo_bundle_mode: "--onefile"
             windowed: ""
             archive_suffix: linux-aarch64.tar.gz
           - name: windows
             os: windows-latest
             add_data: "icon.png;."
             icon_arg: "--icon icon.ico"
+            vncdo_bundle_mode: "--onefile"
             windowed: "--windowed"
             archive_suffix: windows.zip
 
@@ -99,10 +103,20 @@ jobs:
           --noconfirm
           --clean
           --console
-          --onefile
+          ${{ matrix.vncdo_bundle_mode }}
           --name vncdo
           --distpath dist/vnc-typer
           vncdo_launcher.py
+
+      - name: Ad-hoc sign macOS binaries
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          while IFS= read -r -d '' path; do
+            if file "$path" | grep -q 'Mach-O'; then
+              codesign --force --sign - "$path"
+            fi
+          done < <(find dist/vnc-typer -type f -print0)
 
       - name: Package release asset
         if: runner.os != 'Linux'
