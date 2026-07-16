@@ -20,6 +20,7 @@ jobs:
             os: macos-latest
             add_data: "icon.png:."
             icon_arg: "--icon icon.icns"
+            codesign_arg: "--codesign-identity -"
             vncdo_bundle_mode: ""
             windowed: ""
             archive_suffix: macos.zip
@@ -27,6 +28,7 @@ jobs:
             os: ubuntu-latest
             add_data: "icon.png:."
             icon_arg: ""
+            codesign_arg: ""
             vncdo_bundle_mode: "--onefile"
             windowed: ""
             archive_suffix: linux-x86_64.tar.gz
@@ -34,6 +36,7 @@ jobs:
             os: ubuntu-24.04-arm
             add_data: "icon.png:."
             icon_arg: ""
+            codesign_arg: ""
             vncdo_bundle_mode: "--onefile"
             windowed: ""
             archive_suffix: linux-aarch64.tar.gz
@@ -41,6 +44,7 @@ jobs:
             os: windows-latest
             add_data: "icon.png;."
             icon_arg: "--icon icon.ico"
+            codesign_arg: ""
             vncdo_bundle_mode: "--onefile"
             windowed: "--windowed"
             archive_suffix: windows.zip
@@ -94,6 +98,7 @@ jobs:
           ${{ matrix.windowed }}
           --name vnc-typer
           ${{ matrix.icon_arg }}
+          ${{ matrix.codesign_arg }}
           --add-data "${{ matrix.add_data }}"
           main.py
 
@@ -105,21 +110,19 @@ jobs:
           --console
           ${{ matrix.vncdo_bundle_mode }}
           --name vncdo
+          ${{ matrix.codesign_arg }}
           --distpath dist/vnc-typer
           vncdo_launcher.py
 
-      - name: Ad-hoc sign macOS binaries
+      - name: Package macOS release asset
         if: runner.os == 'macOS'
         shell: bash
         run: |
-          while IFS= read -r -d '' path; do
-            if file "$path" | grep -q 'Mach-O'; then
-              codesign --force --sign - "$path"
-            fi
-          done < <(find dist/vnc-typer -type f -print0)
+          cd dist
+          ditto -c -k --keepParent vnc-typer "../vnc-typer-${{ github.ref_name }}-${{ matrix.archive_suffix }}"
 
       - name: Package release asset
-        if: runner.os != 'Linux'
+        if: runner.os == 'Windows'
         shell: bash
         run: |
           cd dist

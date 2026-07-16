@@ -32,6 +32,8 @@ If Tkinter is missing, install it through your Python distribution or system pac
 
 Saved preferences include language, IP address, and port only. The VNC password is not saved.
 
+On macOS, prefer the latest release archive. Older macOS archives may fail after download because system security can block PyInstaller's bundled Python library if archive metadata is not preserved.
+
 ## Usage
 
 Run the app from the project root:
