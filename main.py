@@ -21,24 +21,41 @@ APP_NAME = "vnc-typer"
 PROJECT_URL = "https://github.com/hailinzeng/vnc-typer"
 
 # === Theme Colors ===
-BG_DARK = "#181a20"
-BG_PANEL = "#22252d"
-BG_INPUT = "#111318"
-FG_MAIN = "#e6e8ee"
-FG_DIM = "#9aa3b2"
-FG_ACCENT = "#60a5fa"
+if sys.platform == "darwin":
+    BG_DARK = "#f5f6f8"
+    BG_PANEL = "#ffffff"
+    BG_INPUT = "#ffffff"
+    FG_MAIN = "#111318"
+    FG_DIM = "#4b5563"
+    FG_ACCENT = "#1d4ed8"
+    ACCENT = "#2563eb"
+    BTN_BG = "#e5e7eb"
+    BTN_HOVER = "#d1d5db"
+    BTN_PRIMARY = "#2563eb"
+    BTN_PRIMARY_HOVER = "#1d4ed8"
+    PANEL_BG = "#ffffff"
+    STATUS_BG = "#eef0f3"
+    LABEL_COLOR = "#4b5563"
+    NATIVE_CONTROL_FG = "#111318"
+else:
+    BG_DARK = "#181a20"
+    BG_PANEL = "#22252d"
+    BG_INPUT = "#111318"
+    FG_MAIN = "#e6e8ee"
+    FG_DIM = "#9aa3b2"
+    FG_ACCENT = "#60a5fa"
+    ACCENT = "#2563eb"
+    BTN_BG = "#374151"
+    BTN_HOVER = "#4b5563"
+    BTN_PRIMARY = "#2563eb"
+    BTN_PRIMARY_HOVER = "#1d4ed8"
+    PANEL_BG = "#22252d"
+    STATUS_BG = "#111318"
+    LABEL_COLOR = "#9aa3b2"
+    NATIVE_CONTROL_FG = FG_MAIN
+
 FG_GREEN = "#16a34a"
 FG_RED = "#dc2626"
-
-ACCENT = "#2563eb"
-BTN_BG = "#374151"
-BTN_HOVER = "#4b5563"
-BTN_PRIMARY = "#2563eb"
-BTN_PRIMARY_HOVER = "#1d4ed8"
-PANEL_BG = "#22252d"
-STATUS_BG = "#111318"
-LABEL_COLOR = "#9aa3b2"
-NATIVE_CONTROL_FG = "#111318" if sys.platform == "darwin" else FG_MAIN
 
 FONT_MAIN = ("Segoe UI", 10)
 FONT_BOLD = ("Segoe UI", 10, "bold")
