@@ -10,6 +10,8 @@ import threading
 import sys
 import locale
 
+APP_VERSION = "0.1.2"
+
 # === Theme Colors ===
 BG_DARK = "#1e1e2e"
 BG_PANEL = "#2a2a3e"
@@ -193,7 +195,7 @@ class VNCTyperGUI:
         self.password_value = ""
         self.text_value = ""
         self.selected_file = tk.StringVar(value=self.t("no_file"))
-        self.root.title("vnc-typer")
+        self.root.title(f"vnc-typer {APP_VERSION}")
         self.root.geometry("720x580")
         self.root.resizable(True, True)
         self.root.configure(bg=BG_DARK)
