@@ -10,25 +10,26 @@ import threading
 import sys
 import locale
 
-APP_VERSION = "0.1.2"
+APP_VERSION = "0.1.3"
 
 # === Theme Colors ===
-BG_DARK = "#1e1e2e"
-BG_PANEL = "#2a2a3e"
-BG_INPUT = "#313145"
-FG_MAIN = "#cdd6f4"
-FG_DIM = "#a6adc8"
-FG_ACCENT = "#89b4fa"
-FG_GREEN = "#a6e3a1"
-FG_YELLOW = "#f9e2af"
-FG_RED = "#f38ba8"
-FG_PURPLE = "#cba6f7"
+BG_DARK = "#181a20"
+BG_PANEL = "#22252d"
+BG_INPUT = "#111318"
+FG_MAIN = "#e6e8ee"
+FG_DIM = "#9aa3b2"
+FG_ACCENT = "#60a5fa"
+FG_GREEN = "#16a34a"
+FG_RED = "#dc2626"
 
-ACCENT = "#89b4fa"
-BTN_BG = "#3b3b52"
-BTN_HOVER = "#4a4a66"
-PANEL_BG = "#26263a"
-LABEL_COLOR = "#a6adc8"
+ACCENT = "#2563eb"
+BTN_BG = "#374151"
+BTN_HOVER = "#4b5563"
+BTN_PRIMARY = "#2563eb"
+BTN_PRIMARY_HOVER = "#1d4ed8"
+PANEL_BG = "#22252d"
+STATUS_BG = "#111318"
+LABEL_COLOR = "#9aa3b2"
 
 FONT_MAIN = ("Segoe UI", 10)
 FONT_BOLD = ("Segoe UI", 10, "bold")
@@ -44,102 +45,102 @@ TEXT = {
     "zh": {
         "subtitle": "通过 vncdotool 向 VNC 服务器发送文本",
         "language": "语言",
-        "file_selection": "  📁  文件选择  ",
-        "choose_file": "📂  选择文件",
-        "copy_to_input": "📋  复制到输入框",
-        "text_input": "  📝  文本输入  ",
-        "paste": "📥  粘贴",
-        "clear": "🗑️  清空",
-        "copy": "📋  复制",
+        "file_selection": "文件",
+        "choose_file": "选择文件",
+        "copy_to_input": "复制到输入框",
+        "text_input": "文本输入",
+        "paste": "粘贴",
+        "clear": "清空",
+        "copy": "复制",
         "input_hint": "提示：支持中英文混合输入",
-        "vnc_config": "  🖥️  VNC 服务器配置  ",
+        "vnc_config": "连接",
         "ip_address": "IP 地址",
         "port": "端口",
         "password": "密码",
-        "send_text": "🚀  发送文本到 VNC",
-        "send_file": "📄  发送文件内容到 VNC",
-        "ready": "✅ 就绪",
+        "send_text": "发送文本",
+        "send_file": "发送文件内容",
+        "ready": "就绪",
         "no_file": "未选择文件",
         "vnc_ip_tip": "VNC 服务器 IP",
         "vnc_port_tip": "VNC 端口，默认 5900",
         "vnc_password_tip": "VNC 密码（可选）",
-        "selected_file": "📂 已选择: {name}",
+        "selected_file": "已选择: {name}",
         "choose_file_warning": "请先选择文件",
-        "warning_title": "⚠️ 警告",
-        "file_copied": "✅ 已复制 {name} 的内容到输入框",
+        "warning_title": "警告",
+        "file_copied": "已复制 {name} 的内容到输入框",
         "read_file_failed": "读取文件失败: {error}",
-        "error_title": "❌ 错误",
-        "pasted": "📥 已粘贴",
-        "paste_failed": "❌ 粘贴失败: {error}",
-        "cleared": "🗑️ 已清空",
-        "copied": "✅ 已复制到剪贴板",
-        "empty_input": "⚠️ 输入框为空",
+        "error_title": "错误",
+        "pasted": "已粘贴",
+        "paste_failed": "粘贴失败: {error}",
+        "cleared": "已清空",
+        "copied": "已复制到剪贴板",
+        "empty_input": "输入框为空",
         "missing_ip": "请输入 VNC 服务器 IP 地址",
         "missing_port": "请输入 VNC 端口",
-        "sending": "⏳ 正在发送...",
-        "send_success": "✅ 发送成功",
-        "send_failed": "❌ 发送失败",
+        "sending": "正在发送...",
+        "send_success": "发送成功",
+        "send_failed": "发送失败",
         "vnc_error_title": "VNC 错误",
         "unknown_error": "未知错误",
-        "send_timeout": "❌ 发送超时 (30秒)",
+        "send_timeout": "发送超时 (30秒)",
         "timeout_title": "超时",
         "timeout_message": "VNC 命令执行超时",
-        "vncdo_missing_status": "❌ 未找到 vncdo，请安装 vncdotool: pip install vncdotool",
+        "vncdo_missing_status": "未找到 vncdo，请安装 vncdotool: pip install vncdotool",
         "vncdo_missing_message": "未找到 vncdo 命令，请安装 vncdotool",
-        "config_error_title": "⚠️ 配置错误",
+        "config_error_title": "配置错误",
         "enter_text_warning": "请输入要发送的文本",
         "empty_file_warning": "文件内容为空",
-        "sending_file": "📄 发送文件: {name}",
+        "sending_file": "发送文件: {name}",
     },
     "en": {
         "subtitle": "Send text to a VNC server through vncdotool",
         "language": "Language",
-        "file_selection": "  📁  File Selection  ",
-        "choose_file": "📂  Choose File",
-        "copy_to_input": "📋  Copy to Input",
-        "text_input": "  📝  Text Input  ",
-        "paste": "📥  Paste",
-        "clear": "🗑️  Clear",
-        "copy": "📋  Copy",
+        "file_selection": "File",
+        "choose_file": "Choose File",
+        "copy_to_input": "Copy to Input",
+        "text_input": "Text Input",
+        "paste": "Paste",
+        "clear": "Clear",
+        "copy": "Copy",
         "input_hint": "Tip: mixed Chinese and English input is supported",
-        "vnc_config": "  🖥️  VNC Server Config  ",
+        "vnc_config": "Connection",
         "ip_address": "IP Address",
         "port": "Port",
         "password": "Password",
-        "send_text": "🚀  Send Text to VNC",
-        "send_file": "📄  Send File Content to VNC",
-        "ready": "✅ Ready",
+        "send_text": "Send Text",
+        "send_file": "Send File Content",
+        "ready": "Ready",
         "no_file": "No file selected",
         "vnc_ip_tip": "VNC server IP",
         "vnc_port_tip": "VNC port, default 5900",
         "vnc_password_tip": "VNC password (optional)",
-        "selected_file": "📂 Selected: {name}",
+        "selected_file": "Selected: {name}",
         "choose_file_warning": "Choose a file first",
-        "warning_title": "⚠️ Warning",
-        "file_copied": "✅ Copied {name} into the input box",
+        "warning_title": "Warning",
+        "file_copied": "Copied {name} into the input box",
         "read_file_failed": "Failed to read file: {error}",
-        "error_title": "❌ Error",
-        "pasted": "📥 Pasted",
-        "paste_failed": "❌ Paste failed: {error}",
-        "cleared": "🗑️ Cleared",
-        "copied": "✅ Copied to clipboard",
-        "empty_input": "⚠️ Input box is empty",
+        "error_title": "Error",
+        "pasted": "Pasted",
+        "paste_failed": "Paste failed: {error}",
+        "cleared": "Cleared",
+        "copied": "Copied to clipboard",
+        "empty_input": "Input box is empty",
         "missing_ip": "Enter the VNC server IP address",
         "missing_port": "Enter the VNC port",
-        "sending": "⏳ Sending...",
-        "send_success": "✅ Sent successfully",
-        "send_failed": "❌ Send failed",
+        "sending": "Sending...",
+        "send_success": "Sent successfully",
+        "send_failed": "Send failed",
         "vnc_error_title": "VNC Error",
         "unknown_error": "Unknown error",
-        "send_timeout": "❌ Send timed out (30 seconds)",
+        "send_timeout": "Send timed out (30 seconds)",
         "timeout_title": "Timeout",
         "timeout_message": "The VNC command timed out",
-        "vncdo_missing_status": "❌ vncdo not found. Install vncdotool: pip install vncdotool",
+        "vncdo_missing_status": "vncdo not found. Install vncdotool: pip install vncdotool",
         "vncdo_missing_message": "vncdo command not found. Install vncdotool",
-        "config_error_title": "⚠️ Config Error",
+        "config_error_title": "Config Error",
         "enter_text_warning": "Enter text to send",
         "empty_file_warning": "File content is empty",
-        "sending_file": "📄 Sending file: {name}",
+        "sending_file": "Sending file: {name}",
     },
 }
 
@@ -176,7 +177,7 @@ class ToolTip:
         self.tooltip = tk.Toplevel()
         self.tooltip.wm_overrideredirect(True)
         self.tooltip.wm_geometry(f"+{x}+{y}")
-        label = tk.Label(self.tooltip, text=self.text, bg="#3b3b52", fg="#cdd6f4",
+        label = tk.Label(self.tooltip, text=self.text, bg=BTN_BG, fg=FG_MAIN,
                          font=("Segoe UI", 9), padx=8, pady=4, relief="solid", bd=1)
         label.pack()
 
@@ -190,13 +191,13 @@ class VNCTyperGUI:
     def __init__(self, root):
         self.root = root
         self.language = default_language()
-        self.ip_value = "192.168.50.13"
+        self.ip_value = ""
         self.port_value = "5900"
         self.password_value = ""
         self.text_value = ""
         self.selected_file = tk.StringVar(value=self.t("no_file"))
         self.root.title(f"vnc-typer {APP_VERSION}")
-        self.root.geometry("720x580")
+        self.root.geometry("760x540")
         self.root.resizable(True, True)
         self.root.configure(bg=BG_DARK)
 
@@ -249,21 +250,17 @@ class VNCTyperGUI:
         s.configure("TLabel", background=BG_DARK, foreground=FG_MAIN, font=FONT_MAIN)
         s.configure("Dim.TLabel", foreground=LABEL_COLOR)
         s.configure("TEntry", fieldbackground=BG_INPUT, foreground=FG_MAIN,
-                    insertcolor=FG_MAIN, borderwidth=0)
+                    insertcolor=FG_MAIN, borderwidth=0, padding=(6, 4))
+        s.configure("TCombobox", fieldbackground=BG_INPUT, background=BTN_BG,
+                    foreground=FG_MAIN, arrowcolor=FG_MAIN, borderwidth=0)
         s.configure("TButton", background=BTN_BG, foreground=FG_MAIN, font=FONT_BOLD,
-                    borderwidth=0, padding=(8, 5))
+                    borderwidth=0, padding=(10, 5))
         s.map("TButton",
               background=[("active", BTN_HOVER), ("pressed", BTN_BG)],
               foreground=[("active", FG_MAIN)])
-        s.configure("Send.TButton", background="#2f6f9f", foreground=FG_MAIN, font=FONT_BOLD,
-                    borderwidth=0, padding=(8, 6))
-        s.map("Send.TButton", background=[("active", "#3d8fc0"), ("pressed", "#2f6f9f")])
-        s.configure("SendFile.TButton", background="#4f3f8f", foreground=FG_MAIN, font=FONT_BOLD,
-                    borderwidth=0, padding=(8, 6))
-        s.map("SendFile.TButton", background=[("active", "#5f4faf"), ("pressed", "#4f3f8f")])
-        s.configure("File.TButton", background="#3b523a", foreground=FG_GREEN, font=FONT_BOLD,
+        s.configure("File.TButton", background=BTN_BG, foreground=FG_MAIN, font=FONT_BOLD,
                     borderwidth=0, padding=(8, 5))
-        s.map("File.TButton", background=[("active", "#4b6249"), ("pressed", "#3b523a")])
+        s.map("File.TButton", background=[("active", BTN_HOVER), ("pressed", BTN_BG)])
 
     def _btn(self, parent, text, cmd, style="TButton", side="left", **kwargs):
         btn = ttk.Button(parent, text=text, command=cmd, style=style)
@@ -273,12 +270,12 @@ class VNCTyperGUI:
     def create_widgets(self):
         # === Header ===
         header = tk.Frame(self.root, bg=BG_DARK)
-        header.pack(fill="x", padx=20, pady=(15, 5))
+        header.pack(fill="x", padx=18, pady=(14, 6))
 
-        tk.Label(header, text="🔑 vnc-typer", font=FONT_TITLE, fg=FG_ACCENT,
+        tk.Label(header, text="vnc-typer", font=FONT_TITLE, fg=FG_MAIN,
                  bg=BG_DARK).pack(side="left")
         tk.Label(header, text=self.t("subtitle"), font=FONT_MAIN,
-                 fg=LABEL_COLOR, bg=BG_DARK).pack(side="left", padx=(15, 0))
+                 fg=LABEL_COLOR, bg=BG_DARK).pack(side="left", padx=(14, 0))
         lang_box = tk.Frame(header, bg=BG_DARK)
         lang_box.pack(side="right")
         tk.Label(lang_box, text=self.t("language"), font=FONT_MAIN,
@@ -290,24 +287,60 @@ class VNCTyperGUI:
         language_menu.pack(side="left")
         language_menu.bind("<<ComboboxSelected>>", self.change_language)
 
-        # Separator
-        tk.Frame(self.root, height=1, bg="#3a3a52").pack(fill="x", padx=15, pady=(0, 8))
+        tk.Frame(self.root, height=1, bg="#2f333d").pack(fill="x", padx=18, pady=(0, 8))
 
-        # === Panel 1: File Selection ===
+        # === Connection ===
+        config_frame = ttk.LabelFrame(self.root, text=self.t("vnc_config"), style="Panel.TLabelframe")
+        config_frame.pack(fill="x", padx=18, pady=(0, 6))
+
+        inner_cfg = tk.Frame(config_frame, bg=PANEL_BG)
+        inner_cfg.pack(fill="x", padx=10, pady=8)
+
+        tk.Label(inner_cfg, text=self.t("ip_address"), font=FONT_BOLD, fg=FG_MAIN,
+                 bg=PANEL_BG).pack(side="left", padx=(0, 8))
+        self.ip_entry = tk.Entry(inner_cfg, font=FONT_MONO, bg=BG_INPUT, fg=FG_MAIN,
+                                  insertbackground=FG_MAIN, relief="flat", bd=0,
+                                  width=19, highlightthickness=1,
+                                  highlightcolor=ACCENT, highlightbackground="#343946")
+        self.ip_entry.insert(0, self.ip_value)
+        self.ip_entry.pack(side="left", padx=(0, 16), ipady=3)
+        ToolTip(self.ip_entry, self.t("vnc_ip_tip"))
+
+        tk.Label(inner_cfg, text=self.t("port"), font=FONT_BOLD, fg=FG_MAIN,
+                 bg=PANEL_BG).pack(side="left", padx=(0, 8))
+        self.port_entry = tk.Entry(inner_cfg, font=FONT_MONO, bg=BG_INPUT, fg=FG_MAIN,
+                                    insertbackground=FG_MAIN, relief="flat", bd=0,
+                                    width=8, highlightthickness=1,
+                                    highlightcolor=ACCENT, highlightbackground="#343946")
+        self.port_entry.insert(0, self.port_value)
+        self.port_entry.pack(side="left", padx=(0, 16), ipady=3)
+        ToolTip(self.port_entry, self.t("vnc_port_tip"))
+
+        tk.Label(inner_cfg, text=self.t("password"), font=FONT_BOLD, fg=FG_MAIN,
+                 bg=PANEL_BG).pack(side="left", padx=(0, 8))
+        self.password_entry = tk.Entry(inner_cfg, font=FONT_MONO, bg=BG_INPUT, fg=FG_MAIN,
+                                        insertbackground=FG_MAIN, relief="flat", bd=0,
+                                        width=20, show="•", highlightthickness=1,
+                                        highlightcolor=ACCENT, highlightbackground="#343946")
+        self.password_entry.insert(0, self.password_value)
+        self.password_entry.pack(side="left", fill="x", expand=True, ipady=3)
+        ToolTip(self.password_entry, self.t("vnc_password_tip"))
+
+        # === File Selection ===
         file_frame = ttk.LabelFrame(self.root, text=self.t("file_selection"), style="Panel.TLabelframe")
-        file_frame.pack(fill="x", padx=18, pady=(5, 6))
+        file_frame.pack(fill="x", padx=18, pady=(0, 6))
 
         inner_file = tk.Frame(file_frame, bg=PANEL_BG)
         inner_file.pack(fill="x", padx=10, pady=8)
 
         self._btn(inner_file, self.t("choose_file"), self.select_file, "File.TButton")
+        self._btn(inner_file, self.t("copy_to_input"), self.copy_file_content, "TButton")
         tk.Label(inner_file, textvariable=self.selected_file, font=FONT_MAIN,
-                 fg=LABEL_COLOR, bg=PANEL_BG).pack(side="left", padx=12, fill="x", expand=True)
-        self._btn(inner_file, self.t("copy_to_input"), self.copy_file_content, "TButton", side="right")
+                 fg=LABEL_COLOR, bg=PANEL_BG, anchor="w").pack(side="left", padx=12, fill="x", expand=True)
 
-        # === Panel 2: Text Input ===
+        # === Text Input ===
         text_frame = ttk.LabelFrame(self.root, text=self.t("text_input"), style="Panel.TLabelframe")
-        text_frame.pack(fill="both", expand=True, padx=18, pady=(5, 6))
+        text_frame.pack(fill="both", expand=True, padx=18, pady=(0, 6))
 
         inner_text = tk.Frame(text_frame, bg=PANEL_BG)
         inner_text.pack(fill="both", expand=True, padx=10, pady=(4, 4))
@@ -319,7 +352,7 @@ class VNCTyperGUI:
                                   bg=BG_INPUT, fg=FG_MAIN, insertbackground=FG_MAIN,
                                   relief="flat", bd=0, height=6, padx=8, pady=6,
                                   highlightthickness=1, highlightcolor=ACCENT,
-                                  highlightbackground="#3a3a52")
+                                  highlightbackground="#343946")
         self.text_area.pack(side="left", fill="both", expand=True)
         self.text_area.insert("1.0", self.text_value)
 
@@ -336,74 +369,31 @@ class VNCTyperGUI:
         tk.Label(text_btn_bar, text=self.t("input_hint"), font=("Segoe UI", 8),
                  fg="#6c7086", bg=PANEL_BG).pack(side="right", padx=8)
 
-        # === Panel 3: VNC Config ===
-        config_frame = ttk.LabelFrame(self.root, text=self.t("vnc_config"), style="Panel.TLabelframe")
-        config_frame.pack(fill="x", padx=18, pady=(5, 6))
-
-        inner_cfg = tk.Frame(config_frame, bg=PANEL_BG)
-        inner_cfg.pack(fill="x", padx=10, pady=8)
-
-        # Row 1: IP + Port
-        row1 = tk.Frame(inner_cfg, bg=PANEL_BG)
-        row1.pack(fill="x", pady=(0, 6))
-        tk.Label(row1, text=self.t("ip_address"), font=FONT_BOLD, fg=FG_MAIN,
-                 bg=PANEL_BG).pack(side="left", padx=(0, 8))
-        self.ip_entry = tk.Entry(row1, font=FONT_MONO, bg=BG_INPUT, fg=FG_MAIN,
-                                  insertbackground=FG_MAIN, relief="flat", bd=0,
-                                  width=18, highlightthickness=1,
-                                  highlightcolor=ACCENT, highlightbackground="#3a3a52")
-        self.ip_entry.insert(0, self.ip_value)
-        self.ip_entry.pack(side="left", padx=(0, 20))
-        ToolTip(self.ip_entry, self.t("vnc_ip_tip"))
-
-        tk.Label(row1, text=self.t("port"), font=FONT_BOLD, fg=FG_MAIN,
-                 bg=PANEL_BG).pack(side="left", padx=(0, 8))
-        self.port_entry = tk.Entry(row1, font=FONT_MONO, bg=BG_INPUT, fg=FG_MAIN,
-                                    insertbackground=FG_MAIN, relief="flat", bd=0,
-                                    width=8, highlightthickness=1,
-                                    highlightcolor=ACCENT, highlightbackground="#3a3a52")
-        self.port_entry.insert(0, self.port_value)
-        self.port_entry.pack(side="left")
-        ToolTip(self.port_entry, self.t("vnc_port_tip"))
-
-        # Row 2: Password
-        row2 = tk.Frame(inner_cfg, bg=PANEL_BG)
-        row2.pack(fill="x")
-        tk.Label(row2, text=self.t("password"), font=FONT_BOLD, fg=FG_MAIN,
-                 bg=PANEL_BG).pack(side="left", padx=(0, 22))
-        self.password_entry = tk.Entry(row2, font=FONT_MONO, bg=BG_INPUT, fg=FG_MAIN,
-                                        insertbackground=FG_MAIN, relief="flat", bd=0,
-                                        width=20, show="•", highlightthickness=1,
-                                        highlightcolor=ACCENT, highlightbackground="#3a3a52")
-        self.password_entry.insert(0, self.password_value)
-        self.password_entry.pack(side="left", fill="x", expand=True, padx=(0, 0))
-        ToolTip(self.password_entry, self.t("vnc_password_tip"))
-
         # === Action Buttons ===
         action_frame = tk.Frame(self.root, bg=BG_DARK)
-        action_frame.pack(fill="x", padx=18, pady=(8, 5))
+        action_frame.pack(fill="x", padx=18, pady=(2, 6))
 
         self.send_btn = tk.Button(action_frame, text=self.t("send_text"),
-                                   font=FONT_BOLD, bg="#2f6f9f", fg=FG_MAIN,
-                                   activebackground="#3d8fc0", activeforeground=FG_MAIN,
+                                   font=FONT_BOLD, bg=BTN_PRIMARY, fg=FG_MAIN,
+                                   activebackground=BTN_PRIMARY_HOVER, activeforeground=FG_MAIN,
                                    relief="flat", padx=15, pady=8,
                                    cursor="hand2", command=self.send_text)
         self.send_btn.pack(side="left", padx=(0, 8), fill="x", expand=True)
 
         self.send_file_btn = tk.Button(action_frame, text=self.t("send_file"),
-                                        font=FONT_BOLD, bg="#4f3f8f", fg=FG_MAIN,
-                                        activebackground="#5f4faf", activeforeground=FG_MAIN,
+                                        font=FONT_BOLD, bg=BTN_BG, fg=FG_MAIN,
+                                        activebackground=BTN_HOVER, activeforeground=FG_MAIN,
                                         relief="flat", padx=15, pady=8,
                                         cursor="hand2", command=self.send_file)
         self.send_file_btn.pack(side="left", padx=(0, 0), fill="x", expand=True)
 
         # === Status Bar ===
-        status_frame = tk.Frame(self.root, bg="#1a1a2e", relief="sunken", bd=0)
+        status_frame = tk.Frame(self.root, bg=STATUS_BG, relief="sunken", bd=0)
         status_frame.pack(fill="x", padx=0, pady=(4, 0))
 
         self.status_var = tk.StringVar(value=self.t("ready"))
         tk.Label(status_frame, textvariable=self.status_var, font=("Segoe UI", 9),
-                 fg=LABEL_COLOR, bg="#1a1a2e", anchor="w", padx=15, pady=6).pack(fill="x")
+                 fg=LABEL_COLOR, bg=STATUS_BG, anchor="w", padx=15, pady=6).pack(fill="x")
 
     def select_file(self):
         path = filedialog.askopenfilename()
@@ -479,8 +469,8 @@ class VNCTyperGUI:
     def run_vnc_command(self, cmd):
         try:
             self.status_var.set(self.t("sending"))
-            self.send_btn.config(state="disabled", bg="#2a4a6a")
-            self.send_file_btn.config(state="disabled", bg="#3a2f6a")
+            self.send_btn.config(state="disabled", bg="#1e3a8a")
+            self.send_file_btn.config(state="disabled", bg="#2f3744")
 
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
 
@@ -500,8 +490,8 @@ class VNCTyperGUI:
             self.status_var.set(f"{self.t('error_title')}: {e}")
             messagebox.showerror(self.t("error_title"), str(e))
         finally:
-            self.send_btn.config(state="normal", bg="#2f6f9f")
-            self.send_file_btn.config(state="normal", bg="#4f3f8f")
+            self.send_btn.config(state="normal", bg=BTN_PRIMARY)
+            self.send_file_btn.config(state="normal", bg=BTN_BG)
 
     def send_text(self):
         text = self.text_area.get("1.0", "end-1c")
