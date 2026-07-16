@@ -321,10 +321,31 @@ class VNCTyperGUI:
         self.create_widgets()
 
     def show_about(self):
-        messagebox.showinfo(
-            self.t("about_title"),
-            self.t("about_message", version=APP_VERSION, url=PROJECT_URL),
-        )
+        dialog = tk.Toplevel(self.root)
+        dialog.title(self.t("about_title"))
+        dialog.geometry("440x280")
+        dialog.minsize(360, 220)
+        dialog.configure(bg=BG_DARK)
+        dialog.transient(self.root)
+
+        content = tk.Frame(dialog, bg=BG_DARK)
+        content.pack(fill="both", expand=True, padx=18, pady=16)
+
+        tk.Label(content, text=f"vnc-typer {APP_VERSION}", font=FONT_TITLE,
+                 fg=FG_MAIN, bg=BG_DARK, anchor="w").pack(fill="x")
+
+        message = self.t("about_message", version=APP_VERSION, url=PROJECT_URL)
+        text = tk.Text(content, wrap="word", font=FONT_MAIN, bg=BG_INPUT, fg=FG_MAIN,
+                       insertbackground=FG_MAIN, relief="flat", bd=0, padx=10, pady=8,
+                       highlightthickness=1, highlightbackground="#343946",
+                       highlightcolor=ACCENT)
+        text.insert("1.0", message)
+        text.config(state="disabled")
+        text.pack(fill="both", expand=True, pady=(12, 12))
+
+        button_bar = tk.Frame(content, bg=BG_DARK)
+        button_bar.pack(fill="x")
+        ttk.Button(button_bar, text="OK", command=dialog.destroy).pack(side="right")
 
     def _apply_ttk_style(self):
         s = self.style
