@@ -103,9 +103,10 @@ jobs:
         if: runner.os == 'macOS'
         shell: bash
         run: |
-          mkdir -p dist/vnc-typer
-          cp main.py icon.png requirements.txt README.md version.py dist/vnc-typer/
-          cat > dist/vnc-typer/run-vnc-typer.command <<'EOF'
+          package_dir="vnc-typer-${{ github.ref_name }}-${{ matrix.name }}"
+          mkdir -p "dist/${package_dir}"
+          cp main.py icon.png requirements.txt README.md version.py "dist/${package_dir}/"
+          cat > "dist/${package_dir}/run-vnc-typer.command" <<'EOF'
           #!/bin/sh
           set -eu
           cd "$(dirname "$0")"
@@ -117,23 +118,27 @@ jobs:
           python -m pip install -r requirements.txt
           python main.py
           EOF
-          chmod +x dist/vnc-typer/run-vnc-typer.command
+          chmod +x "dist/${package_dir}/run-vnc-typer.command"
           cd dist
-          ditto -c -k --keepParent vnc-typer "../vnc-typer-${{ github.ref_name }}-${{ matrix.archive_suffix }}"
+          ditto -c -k --keepParent "${package_dir}" "../vnc-typer-${{ github.ref_name }}-${{ matrix.archive_suffix }}"
 
       - name: Package release asset
         if: runner.os == 'Windows'
         shell: bash
         run: |
           cd dist
-          python -m zipfile -c "../vnc-typer-${{ github.ref_name }}-${{ matrix.archive_suffix }}" vnc-typer
+          package_dir="vnc-typer-${{ github.ref_name }}-${{ matrix.name }}"
+          mv vnc-typer "${package_dir}"
+          python -m zipfile -c "../vnc-typer-${{ github.ref_name }}-${{ matrix.archive_suffix }}" "${package_dir}"
 
       - name: Package release asset
         if: runner.os == 'Linux'
         shell: bash
         run: |
           cd dist
-          tar -czf "../vnc-typer-${{ github.ref_name }}-${{ matrix.archive_suffix }}" vnc-typer
+          package_dir="vnc-typer-${{ github.ref_name }}-${{ matrix.name }}"
+          mv vnc-typer "${package_dir}"
+          tar -czf "../vnc-typer-${{ github.ref_name }}-${{ matrix.archive_suffix }}" "${package_dir}"
 
       - name: Upload release asset
         uses: softprops/action-gh-release@v2
