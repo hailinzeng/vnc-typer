@@ -12,6 +12,8 @@
 - Preserve line breaks by sending `Return` key events between lines.
 - Optional VNC password support.
 - Chinese and English interface languages.
+- Saves language, IP address, and port preferences locally.
+- About dialog with version and project information.
 
 ## Requirements
 
@@ -27,6 +29,8 @@ pip install -r requirements.txt
 ```
 
 If Tkinter is missing, install it through your Python distribution or system package manager.
+
+Saved preferences include language, IP address, and port only. The VNC password is not saved.
 
 ## Usage
 
@@ -70,6 +74,8 @@ git push origin v0.1.0
 ```
 
 The release workflow creates downloadable archives for macOS, Linux x86_64, Linux aarch64, and Windows. Release asset filenames include the tag version, such as `vnc-typer-v0.1.3-linux-x86_64.tar.gz`. Each archive includes the `vnc-typer` app and a bundled `vncdo` command built from `vncdotool`.
+
+Release builds generate `version.py` from the pushed tag, so the app title matches the release version. Local development builds show `dev` unless `VNC_TYPER_VERSION` is set.
 
 ## Project Files
 

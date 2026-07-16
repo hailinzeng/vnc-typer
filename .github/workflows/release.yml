@@ -19,21 +19,25 @@ jobs:
           - name: macos
             os: macos-latest
             add_data: "icon.png:."
+            icon_arg: "--icon icon.icns"
             windowed: ""
             archive_suffix: macos.zip
           - name: linux-x86_64
             os: ubuntu-latest
             add_data: "icon.png:."
+            icon_arg: ""
             windowed: ""
             archive_suffix: linux-x86_64.tar.gz
           - name: linux-aarch64
             os: ubuntu-24.04-arm
             add_data: "icon.png:."
+            icon_arg: ""
             windowed: ""
             archive_suffix: linux-aarch64.tar.gz
           - name: windows
             os: windows-latest
             add_data: "icon.png;."
+            icon_arg: "--icon icon.ico"
             windowed: "--windowed"
             archive_suffix: windows.zip
 
@@ -51,6 +55,33 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt pyinstaller
 
+      - name: Generate release version module
+        shell: bash
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          printf 'APP_VERSION = "%s"\n' "$version" > version.py
+
+      - name: Generate Windows app icon
+        if: runner.os == 'Windows'
+        run: python scripts/make_ico.py icon.png icon.ico
+
+      - name: Generate macOS app icon
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          mkdir icon.iconset
+          sips -z 16 16 icon.png --out icon.iconset/icon_16x16.png
+          sips -z 32 32 icon.png --out icon.iconset/icon_16x16@2x.png
+          sips -z 32 32 icon.png --out icon.iconset/icon_32x32.png
+          sips -z 64 64 icon.png --out icon.iconset/icon_32x32@2x.png
+          sips -z 128 128 icon.png --out icon.iconset/icon_128x128.png
+          sips -z 256 256 icon.png --out icon.iconset/icon_128x128@2x.png
+          sips -z 256 256 icon.png --out icon.iconset/icon_256x256.png
+          sips -z 512 512 icon.png --out icon.iconset/icon_256x256@2x.png
+          sips -z 512 512 icon.png --out icon.iconset/icon_512x512.png
+          sips -z 1024 1024 icon.png --out icon.iconset/icon_512x512@2x.png
+          iconutil -c icns icon.iconset -o icon.icns
+
       - name: Build vnc-typer
         run: >
           pyinstaller
@@ -58,6 +89,7 @@ jobs:
           --clean
           ${{ matrix.windowed }}
           --name vnc-typer
+          ${{ matrix.icon_arg }}
           --add-data "${{ matrix.add_data }}"
           main.py
 

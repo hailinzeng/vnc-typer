@@ -9,8 +9,16 @@ import subprocess
 import threading
 import sys
 import locale
+import json
+from pathlib import Path
 
-APP_VERSION = "0.1.3"
+try:
+    from version import APP_VERSION
+except ImportError:
+    APP_VERSION = os.environ.get("VNC_TYPER_VERSION", "dev")
+
+APP_NAME = "vnc-typer"
+PROJECT_URL = "https://github.com/hailinzeng/vnc-typer"
 
 # === Theme Colors ===
 BG_DARK = "#181a20"
@@ -45,6 +53,14 @@ TEXT = {
     "zh": {
         "subtitle": "通过 vncdotool 向 VNC 服务器发送文本",
         "language": "语言",
+        "about": "关于",
+        "about_title": "关于 vnc-typer",
+        "about_message": (
+            "vnc-typer {version}\n\n"
+            "向不支持剪贴板粘贴的 VNC 会话输入文本。\n\n"
+            "{url}\n\n"
+            "请仅在授权的 VNC 服务器和系统上使用。"
+        ),
         "file_selection": "文件",
         "choose_file": "选择文件",
         "copy_to_input": "复制到输入框",
@@ -95,6 +111,14 @@ TEXT = {
     "en": {
         "subtitle": "Send text to a VNC server through vncdotool",
         "language": "Language",
+        "about": "About",
+        "about_title": "About vnc-typer",
+        "about_message": (
+            "vnc-typer {version}\n\n"
+            "Type text into VNC sessions that do not support clipboard paste.\n\n"
+            "{url}\n\n"
+            "Use only with VNC servers and systems you are authorized to access."
+        ),
         "file_selection": "File",
         "choose_file": "Choose File",
         "copy_to_input": "Copy to Input",
@@ -150,6 +174,43 @@ def default_language():
     return "zh" if language.lower().startswith("zh") else "en"
 
 
+def config_path():
+    if os.name == "nt":
+        base_dir = os.environ.get("APPDATA") or Path.home() / "AppData" / "Roaming"
+    elif sys.platform == "darwin":
+        base_dir = Path.home() / "Library" / "Application Support"
+    else:
+        base_dir = os.environ.get("XDG_CONFIG_HOME") or Path.home() / ".config"
+    return Path(base_dir) / APP_NAME / "config.json"
+
+
+def load_preferences():
+    try:
+        with config_path().open("r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+    prefs = {}
+    if data.get("language") in TEXT:
+        prefs["language"] = data["language"]
+    if isinstance(data.get("ip"), str):
+        prefs["ip"] = data["ip"]
+    if isinstance(data.get("port"), str):
+        prefs["port"] = data["port"]
+    return prefs
+
+
+def save_preferences(language, ip, port):
+    path = config_path()
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("w", encoding="utf-8") as f:
+            json.dump({"language": language, "ip": ip, "port": port}, f, indent=2)
+    except OSError:
+        pass
+
+
 def resource_path(name):
     base_dir = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_dir, name)
@@ -190,9 +251,10 @@ class ToolTip:
 class VNCTyperGUI:
     def __init__(self, root):
         self.root = root
-        self.language = default_language()
-        self.ip_value = ""
-        self.port_value = "5900"
+        prefs = load_preferences()
+        self.language = prefs.get("language", default_language())
+        self.ip_value = prefs.get("ip", "")
+        self.port_value = prefs.get("port", "5900")
         self.password_value = ""
         self.text_value = ""
         self.selected_file = tk.StringVar(value=self.t("no_file"))
@@ -200,6 +262,7 @@ class VNCTyperGUI:
         self.root.geometry("760x540")
         self.root.resizable(True, True)
         self.root.configure(bg=BG_DARK)
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
 
         # Window icon
         try:
@@ -219,6 +282,15 @@ class VNCTyperGUI:
         value = TEXT[self.language][key]
         return value.format(**kwargs) if kwargs else value
 
+    def save_current_preferences(self):
+        ip = self.ip_entry.get().strip() if hasattr(self, "ip_entry") else self.ip_value
+        port = self.port_entry.get().strip() if hasattr(self, "port_entry") else self.port_value
+        save_preferences(self.language, ip, port)
+
+    def on_close(self):
+        self.save_current_preferences()
+        self.root.destroy()
+
     def change_language(self, _event=None):
         selected = self.language_var.get()
         language = next((code for code, name in LANGUAGE_NAMES.items() if name == selected), self.language)
@@ -235,10 +307,17 @@ class VNCTyperGUI:
         self.language = language
         if no_file_selected:
             self.selected_file.set(self.t("no_file"))
+        self.save_current_preferences()
 
         for child in self.root.winfo_children():
             child.destroy()
         self.create_widgets()
+
+    def show_about(self):
+        messagebox.showinfo(
+            self.t("about_title"),
+            self.t("about_message", version=APP_VERSION, url=PROJECT_URL),
+        )
 
     def _apply_ttk_style(self):
         s = self.style
@@ -278,6 +357,7 @@ class VNCTyperGUI:
                  fg=LABEL_COLOR, bg=BG_DARK).pack(side="left", padx=(14, 0))
         lang_box = tk.Frame(header, bg=BG_DARK)
         lang_box.pack(side="right")
+        ttk.Button(lang_box, text=self.t("about"), command=self.show_about).pack(side="left", padx=(0, 12))
         tk.Label(lang_box, text=self.t("language"), font=FONT_MAIN,
                  fg=LABEL_COLOR, bg=BG_DARK).pack(side="left", padx=(0, 8))
         self.language_var = tk.StringVar(value=LANGUAGE_NAMES[self.language])
@@ -304,6 +384,7 @@ class VNCTyperGUI:
                                   highlightcolor=ACCENT, highlightbackground="#343946")
         self.ip_entry.insert(0, self.ip_value)
         self.ip_entry.pack(side="left", padx=(0, 16), ipady=3)
+        self.ip_entry.bind("<FocusOut>", lambda _event: self.save_current_preferences())
         ToolTip(self.ip_entry, self.t("vnc_ip_tip"))
 
         tk.Label(inner_cfg, text=self.t("port"), font=FONT_BOLD, fg=FG_MAIN,
@@ -314,6 +395,7 @@ class VNCTyperGUI:
                                     highlightcolor=ACCENT, highlightbackground="#343946")
         self.port_entry.insert(0, self.port_value)
         self.port_entry.pack(side="left", padx=(0, 16), ipady=3)
+        self.port_entry.bind("<FocusOut>", lambda _event: self.save_current_preferences())
         ToolTip(self.port_entry, self.t("vnc_port_tip"))
 
         tk.Label(inner_cfg, text=self.t("password"), font=FONT_BOLD, fg=FG_MAIN,
@@ -445,6 +527,7 @@ class VNCTyperGUI:
             raise ValueError(self.t("missing_ip"))
         if not port:
             raise ValueError(self.t("missing_port"))
+        self.save_current_preferences()
 
         vncdo = bundled_command("vncdo")
         if not vncdo:
